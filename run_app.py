@@ -3,7 +3,7 @@ from rasa_core.channels.facebook import FacebookInput
 from rasa_core.agent import Agent
 from rasa_core.interpreter import RegexInterpreter
 from rasa_core.interpreter import RasaNLUInterpreter
-from slack_connector import SlackInput
+from rasa_slack_connector import SlackInput
 
 #load your agent
 

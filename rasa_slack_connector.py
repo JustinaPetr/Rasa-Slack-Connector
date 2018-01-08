@@ -17,21 +17,22 @@ logger = logging.getLogger(__name__)
 
 
 
-class SlackBot(Bot, OutputChannel):
+class SlackBot(OutputChannel):
     """A bot that uses fb-messenger to communicate."""
 
-    def __init__(self, access_token):
-        super(SlackBot, self).__init__(access_token)
-        print()
+    def __init__(self, slack_verification_token, channel):
+        self.slack_verification_token = slack_verification_token
+        self.channel = channel		
 
-    def send_text_with_buttons(self, recipient_id, text, buttons, **kwargs):
-        pass
+    def send_text_message(self, recipient_id, message):
+        from slackclient import SlackClient
+        text = message
+        recipient = recipient_id        
+        SLACK_BOT_TOKEN = self.slack_verification_token
+        CLIENT = SlackClient(SLACK_BOT_TOKEN)
+		
+        CLIENT.api_call("chat.postMessage", channel=self.channel, text=text, as_user = True)
 
-    def _add_postback_info(self, buttons):
-        pass
-
-    def send_custom_message(self, recipient_id, elements):
-        pass
 
 
 class SlackInput(HttpInputComponent):
@@ -58,6 +59,8 @@ class SlackInput(HttpInputComponent):
             print(request.json)
 				
             if request.json.get('token') == self.slack_client and request.json.get('type') == "event_callback": #verify token
+                print(self.slack_client)
+                print(self.slack_verification_token)				
                 payload = request.json
                 data = payload
                 messaging_events = data.get('event')
@@ -66,8 +69,17 @@ class SlackInput(HttpInputComponent):
                 text = messaging_events.get('text')	
                 bot = messaging_events.get('bot_id')				
                 if bot == None: #check if it's a new message from the user. Bot users will not have userids
-                    on_new_message(UserMessage(text, SlackBot(self.slack_dev_token)))
+                    on_new_message(UserMessage(text, SlackBot(self.slack_verification_token, channel)))
 			
             return Response(), 200 	
 				
         return slack_webhook
+			
+			
+			
+			
+			
+			
+			
+		
+		
