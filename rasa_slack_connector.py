@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class SlackBot(OutputChannel):
-    """A bot that uses fb-messenger to communicate."""
+    """A bot that uses SlackClient to communicate."""
 
     def __init__(self, slack_verification_token, channel):
         self.slack_verification_token = slack_verification_token
