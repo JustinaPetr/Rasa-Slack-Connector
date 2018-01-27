@@ -7,7 +7,6 @@ import logging
 
 from builtins import str
 from flask import Blueprint, request, jsonify
-from bot import Bot
 
 from rasa_core.channels.channel import UserMessage, OutputChannel
 from rasa_core.channels.rest import HttpInputComponent
